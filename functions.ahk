@@ -1,7 +1,14 @@
 ﻿FillPractitionerOnDiagScreen(){
     global practitioner_name
     SetDefaultKeyboard(0x041e)
-    Send, %practitioner_name%
+    Send, %practitioner_name%{Tab 1}
+    SetDefaultKeyboard(0x0409)
+    return
+}
+
+FillRTBOnDiagScreen(){
+    SetDefaultKeyboard(0x041e)
+    Send, จำหน่ายกลับบ้าน{Enter 1}
     SetDefaultKeyboard(0x0409)
     return
 }
@@ -17,7 +24,7 @@ FillMedication(){
     SetDefaultKeyboard(0x0409)
     Send, {Backspace 2}%equip_name%
     Sleep, 200
-    Send, {Enter 3}
+    Send, {Enter 4}
     return
 }
 
@@ -29,6 +36,7 @@ FillOperation(){
     Sleep, 200
     Send, {Enter 2}IM{Enter 8}
     SetDefaultKeyboard(0x0409)
+    Sleep, 50
     return
 }
 
@@ -46,7 +54,15 @@ FillVaccine(){
     return
 }
 
+ReturnToHN(){
+    MouseMove, 721, 175
+}
+
 FullAutomate(){
+    global practitioner_name, vac_lot, equip_name
+    IniRead, practitioner_name, data_key.ini, key, practitioner
+    IniRead, vac_lot, data_key.ini, key, lot
+    IniRead, equip_name, data_key.ini, key, equip
     ; 1 screen
     MouseClick, Left, 92, 569, 1
     FillDiagnosis()
@@ -68,7 +84,9 @@ FullAutomate(){
     MouseClick, Left, 38, 463, 1
     MouseClick, Left, 102, 491, 1
     FillPractitionerOnDiagScreen()
+    FillRTBOnDiagScreen()
     ; To Save Button
     MouseClick, Left, 1835, 990, 1
+    ReturnToHN()
     return
 }
